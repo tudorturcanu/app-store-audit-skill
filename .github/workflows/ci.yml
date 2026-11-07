@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run unit tests
+        run: python3 -m unittest discover -s skills/app-store-audit/tests -p 'test_*.py'
+
+      - name: Validate SKILL.md
+        run: |
+          python3 - <<'PY'
+          import os, re, sys
+          path = "skills/app-store-audit/SKILL.md"
+          assert os.path.exists(path), f"{path} not found"
+          content = open(path).read()
+          assert content.startswith("---\n"), "SKILL.md must start with YAML frontmatter"
+          print(f"SKILL.md validated successfully ({len(content.splitlines())} lines)")
+          PY

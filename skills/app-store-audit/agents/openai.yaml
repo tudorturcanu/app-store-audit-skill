@@ -1,0 +1,4 @@
+interface:
+  display_name: "App Store Audit"
+  short_description: "Audit iOS releases against current Apple requirements"
+  default_prompt: "Use $app-store-audit to audit this iOS app for App Store submission, checking current Apple requirements and citing evidence for each finding."
